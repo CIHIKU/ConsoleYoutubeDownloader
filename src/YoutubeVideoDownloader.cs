@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using VideoLibrary;
 
-namespace ConsoleYoutubeDownloader
+namespace src
 {
     class YoutubeVideoDownloader
     {
@@ -15,7 +15,7 @@ namespace ConsoleYoutubeDownloader
         private static string videoTitle = " ";
         private static List<int>? audioBitRate = new();
         private static List<int>? videoResolution = new();
-        
+
 
         private static async Task Main()
         {
@@ -46,10 +46,10 @@ namespace ConsoleYoutubeDownloader
             OutputVideoData(videoTitle, videoResolution, audioBitRate);
 
             Console.WriteLine("Enter video resolution(if 0 only audio): ");
-            int resolution = Int32.Parse(Console.ReadLine());
+            int resolution = int.Parse(Console.ReadLine());
 
             Console.WriteLine("Enter bit rate(if 0 only video): ");
-            int bitRate = Int32.Parse(Console.ReadLine());
+            int bitRate = int.Parse(Console.ReadLine());
 
             if (resolution > 0 && bitRate > 0)
             {
@@ -68,7 +68,7 @@ namespace ConsoleYoutubeDownloader
         }
 
         //Video with audio
-        private static async Task Download(string url ,string path, string videoTitle, int resolution, int bitRate)
+        private static async Task Download(string url, string path, string videoTitle, int resolution, int bitRate)
         {
             Task audio = SourceDownloader(MainPath + "Audio.mp4", TakeAudio(url, bitRate));
             Task video = SourceDownloader(MainPath + "Video.mp4", TakeVideo(url, resolution));
@@ -80,7 +80,7 @@ namespace ConsoleYoutubeDownloader
 
             await video;
 
-            FFMpeg.ReplaceAudio(MainPath + "Video.mp4", MainPath + "Audio.mp3", MainPath+videoTitle+VideoFileExtension);
+            FFMpeg.ReplaceAudio(MainPath + "Video.mp4", MainPath + "Audio.mp3", MainPath + videoTitle + VideoFileExtension);
             File.Delete(MainPath + "Video.mp4");
             File.Delete(MainPath + "Audio.mp3");
         }
@@ -184,7 +184,7 @@ namespace ConsoleYoutubeDownloader
             _youTube.GetAllVideos(url);
 
         //Get video title
-        private static string? GetVideoTitle(IEnumerable<YouTubeVideo>? videoData) => 
+        private static string? GetVideoTitle(IEnumerable<YouTubeVideo>? videoData) =>
             Regex.Replace(videoData?.First().Title, @"\W+", " ");
 
         //Get all audio bit rates
