@@ -1,6 +1,7 @@
 ﻿using FFMpegCore;
 using System.Text.RegularExpressions;
 using VideoLibrary;
+using Xabe.FFmpeg.Downloader;
 
 namespace src
 {
@@ -11,7 +12,7 @@ namespace src
 
         private static readonly YouTube _youTube = YouTube.Default;
 
-        private static string MainPath = "";
+        private static string MainPath = @"C:\Users\Gewpm\Videos\Bot\";
         private static string videoTitle = " ";
         private static List<int>? audioBitRate = new();
         private static List<int>? videoResolution = new();
@@ -27,9 +28,11 @@ namespace src
         {
             ClearVideoData();
 
+            await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Full);
+
             Console.WriteLine("Enter path to video download: ");
-            MainPath = Console.ReadLine();
-            MainPath = @"" + MainPath;
+            //MainPath = Console.ReadLine();
+            //MainPath = @"" + MainPath;
             if (MainPath == null)
             {
                 Console.WriteLine("Wrong path");
@@ -117,6 +120,7 @@ namespace src
         //Write stream in file
         private static async Task StreamInFile(YouTubeVideo video, HttpClient httpClient, Stream output, long? totalBytes)
         {
+            Console.WriteLine(video.Uri);
             using (Stream input = await httpClient.GetStreamAsync(video.Uri))
             {
                 byte[] buffer = new byte[16 * 1024];
