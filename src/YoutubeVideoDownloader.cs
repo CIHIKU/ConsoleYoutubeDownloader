@@ -12,7 +12,6 @@ namespace src
 
         private static readonly YouTube _youTube = YouTube.Default;
 
-        private static string MainPath = "";
         private static string videoTitle = " ";
         private static List<int>? audioBitRate = new();
         private static List<int>? videoResolution = new();
@@ -21,6 +20,7 @@ namespace src
         private static async Task Main()
         {
             await ConsoleApp();
+            
         }
 
         //For test in console
@@ -31,7 +31,7 @@ namespace src
             await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Full);
 
             Console.WriteLine("Enter path to video download: ");
-            MainPath = Console.ReadLine();
+            string? MainPath = Console.ReadLine();
             MainPath = @"" + MainPath;
             if (MainPath == null)
             {
@@ -73,35 +73,35 @@ namespace src
         //Video with audio
         private static async Task Download(string url, string path, string videoTitle, int resolution, int bitRate)
         {
-            Task audio = SourceDownloader(MainPath + "Audio.mp4", TakeAudio(url, bitRate));
-            Task video = SourceDownloader(MainPath + "Video.mp4", TakeVideo(url, resolution));
+            Task audio = SourceDownloader(path + "Audio.mp4", TakeAudio(url, bitRate));
+            Task video = SourceDownloader(path + "Video.mp4", TakeVideo(url, resolution));
 
-            await audio;
+            //await audio;
 
-            FFMpeg.ExtractAudio(MainPath + "Audio.mp4", MainPath + "Audio.mp3");
-            File.Delete(MainPath + "Audio.mp4");
+            FFMpeg.ExtractAudio(path + "Audio.mp4", path + "Audio.mp3");
+            File.Delete(path + "Audio.mp4");
 
             await video;
 
-            FFMpeg.ReplaceAudio(MainPath + "Video.mp4", MainPath + "Audio.mp3", MainPath + videoTitle + VideoFileExtension);
-            File.Delete(MainPath + "Video.mp4");
-            File.Delete(MainPath + "Audio.mp3");
+            FFMpeg.ReplaceAudio(path + "Video.mp4", path + "Audio.mp3", path + videoTitle + VideoFileExtension);
+            File.Delete(path + "Video.mp4");
+            File.Delete(path + "Audio.mp3");
         }
 
         //Only audio
         private static async Task Download(string url, string path, string videoTitle, int bitRate, bool isOnlyAudio = true)
         {
 
-            Task audio = SourceDownloader(MainPath + "Audio.mp4", TakeAudio(url, bitRate));
+            Task audio = SourceDownloader(path + "Audio.mp4", TakeAudio(url, bitRate));
             await audio;
-            FFMpeg.ExtractAudio(MainPath + "Audio.mp4", MainPath + videoTitle + "Audio.mp3");
-            File.Delete(MainPath + "Audio.mp4");
+            FFMpeg.ExtractAudio(path + "Audio.mp4", path + videoTitle + "Audio.mp3");
+            File.Delete(path + "Audio.mp4");
         }
 
         //Only video
         private static async Task Download(string url, string path, string videoTitle, int resolution)
         {
-            Task video = SourceDownloader(MainPath + "Video.mp4", TakeVideo(url, resolution));
+            Task video = SourceDownloader(path + "Video.mp4", TakeVideo(url, resolution));
             await video;
         }
 
@@ -231,7 +231,7 @@ namespace src
         //Clear videotitle and lists of resolution and bit rate
         private static void ClearVideoData()
         {
-            videoTitle = null;
+            videoTitle = "";
             videoResolution?.Clear();
             audioBitRate?.Clear();
         }
