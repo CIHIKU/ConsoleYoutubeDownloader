@@ -78,44 +78,5 @@
             if (url == null) throw new Exception("You lox");
             return url;
         }
-
-        //For test in console
-        /*private static async Task ConsoleApp()
-        {
-            Console.WriteLine("Enter path to video download: ");
-            string? MainPath = Console.ReadLine();
-            MainPath = @"" + MainPath;
-            if (MainPath == null)
-            {
-                Console.WriteLine("Wrong path");
-                return;
-            }
-
-            Console.WriteLine("Enter video url: ");
-            var url = Console.ReadLine();
-
-            Console.WriteLine("Enter video resolution(if 0 only audio): ");
-            int resolution = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Enter bit rate(if 0 only video): ");
-            int bitRate = int.Parse(Console.ReadLine());
-
-            if (resolution > 0 && bitRate > 0)
-            {
-                await downloader.Download(url, MainPath, resolution, bitRate: bitRate);
-            }
-            else if (resolution > 0)
-            {
-                await downloader.Download(url, MainPath, resolution);
-            }
-            else if (bitRate > 0)
-            {
-                await downloader.Download(url, MainPath, bitRate: bitRate);
-            }
-
-            Console.WriteLine("Download ended");
-        }*/
-
-
     }
 }

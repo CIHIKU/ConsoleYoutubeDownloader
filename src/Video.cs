@@ -54,7 +54,7 @@ namespace src
         }
 
         public async Task<string> DownloadAudio(int bitRate)
-        {
+        { 
             await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Full);
 
             string uri = GetUri(GetAudio(_url, bitRate));
