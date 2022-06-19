@@ -4,7 +4,7 @@
     {
         private static async Task Main()
         {
-            Video video = new(InputUrl(), InputPath());
+            IVideo video = new Video(InputUrl(), InputPath());
 
             OutputVideoData(video);
 
@@ -22,7 +22,7 @@
             return path;
         }
 
-        private static void OutputVideoData(Video video)
+        private static void OutputVideoData(IVideo video)
         {
             Console.WriteLine($"Title: {video.VideoTitle}");
             Console.WriteLine("Resolutions: ");

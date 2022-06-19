@@ -5,7 +5,7 @@ using Xabe.FFmpeg.Downloader;
 
 namespace src
 {
-    class Video
+    class Video : IVideo
     {
         private const string VideoFileExtension = ".mp4";
         private const string AudioFileExtension = ".mp3";
@@ -54,7 +54,7 @@ namespace src
         }
 
         public async Task<string> DownloadAudio(int bitRate)
-        { 
+        {
             await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Full);
 
             string uri = GetUri(GetAudio(_url, bitRate));
@@ -124,8 +124,12 @@ namespace src
         private IEnumerable<YouTubeVideo> GetVideoData(string url) =>
             _youTube.GetAllVideos(url);
 
-        private string? GetVideoTitle(IEnumerable<YouTubeVideo> videoData) =>
-            Regex.Replace(videoData.First().Title, @"\W+", " ");
+        private string? GetVideoTitle(IEnumerable<YouTubeVideo> videoData)
+        {
+            string title = videoData.First().Title;
+            if(title == null) throw new Exception("You died");
+            return Regex.Replace(title, @"\W+", " ");
+        }
 
         private List<int> GetAudioBitRate(IEnumerable<YouTubeVideo>? videoData)
         {
